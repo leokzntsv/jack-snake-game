@@ -1,10 +1,28 @@
 class Snake {
-    field int x, y;
+    field Array x, y;
+    field int length;
     field int size;
 
     constructor Snake new() {
-        let x = 0;
-        let y = 0;
+        var int arrayLength;
+        let arrayLength = 10;
+        let x = Array.new(arrayLength);
+        let y = Array.new(arrayLength);
+
+        let length = 4;
+
+        let x[0] = 45;
+        let y[0] = 0;
+
+        let x[1] = 30;
+        let y[1] = 0;
+
+        let x[2] = 15;
+        let y[2] = 0;
+
+        let x[3] = 0;
+        let y[3] = 0;
+
         let size = 15;
         do draw();
         return this;
@@ -16,53 +34,82 @@ class Snake {
     }
 
     method void draw() {
+        var int i;
+        let i = 0;
         do Screen.setColor(true);
-        do Screen.drawRectangle(x, y, x + size, y + size);
+
+        while (i < length) {
+            do Screen.drawRectangle(x[i], y[i], x[i] + size, y[i] + size);
+            let i = i + 1;
+        }
+
         return;
     }
 
     method void erase() {
+        var int i;
+        let i = 0;
         do Screen.setColor(false);
-        do Screen.drawRectangle(x, y, x + size, y + size);
+
+        while (i < length) {
+            do Screen.drawRectangle(x[i], y[i], x[i] + size, y[i] + size);
+            let i = i + 1;
+        }
+
         return;
     }
 
     method void moveUp() {
-        if (((y - size) > 0) | ((y - size) = 0)) {
+        if (((y[0] - size) > 0) | ((y[0] - size) = 0)) {
             do erase();
-            let y = y - size;
-            do Screen.setColor(true);
-            do Screen.drawRectangle(x, y, x + size, y + size);
+            do shiftBody();
+
+            let y[0] = y[0] - size;
+            do draw();
         }
         return;
     }
 
     method void moveDown() {
-        if (((y + size) < (255 - size)) | ((y + size) = (255 - size))) {
+        if (((y[0] + size) < (255 - size)) | ((y[0] + size) = (255 - size))) {
             do erase();
-            let y = y + size;
-            do Screen.setColor(true);
-            do Screen.drawRectangle(x, y, x + size, y + size);
+            do shiftBody();
+
+            let y[0] = y[0] + size;
+            do draw();
         }
         return;
     }
 
     method void moveLeft() {
-        if (((x - size) > 0) | ((x - size) = 0)) {
+        if (((x[0] - size) > 0) | ((x[0] - size) = 0)) {
             do erase();
-            let x = x - size;
-            do Screen.setColor(true);
-            do Screen.drawRectangle(x, y, x + size, y + size);
+            do shiftBody();
+
+            let x[0] = x[0] - size;
+            do draw();
         }
         return;
     }
 
     method void moveRight() {
-        if (((x + size) < (511 - size)) | ((x + size) = (511 - size))) {
+        if (((x[0] + size) < (511 - size)) | ((x[0] + size) = (511 - size))) {
             do erase();
-            let x = x + size;
-            do Screen.setColor(true);
-            do Screen.drawRectangle(x, y, x + size, y + size);
+            do shiftBody();
+
+            let x[0] = x[0] + size;
+            do draw();
+        }
+        return;
+    }
+
+    method void shiftBody() {
+        var int i;
+        let i = (length - 1);
+        while (i > 0) {
+            let x[i] = x[i - 1];
+            let y[i] = y[i - 1];
+            let i = i - 1;
         }
         return;
     }
