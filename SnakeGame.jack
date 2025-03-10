@@ -27,7 +27,9 @@ class SnakeGame {
                 do moveSnake();
             }
 
-            if (key = 81)  { let exit = true; }       // q key
+            if (key = 81) { let exit = true; }        // q key
+            if (key = 88) { do snake.incLength(); }   // x key
+
             if (key = 131) { do updateDirection(1); } // up arrow
             if (key = 133) { do updateDirection(2); } // down arrow
             if (key = 130) { do updateDirection(3); } // left arrow

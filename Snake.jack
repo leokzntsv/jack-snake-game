@@ -1,15 +1,15 @@
 class Snake {
     field Array x, y;
     field int length;
+    field int maxLength;
     field int size;
 
     constructor Snake new() {
-        var int arrayLength;
-        let arrayLength = 10;
-        let x = Array.new(arrayLength);
-        let y = Array.new(arrayLength);
-
         let length = 4;
+        let maxLength = 20;
+
+        let x = Array.new(maxLength);
+        let y = Array.new(maxLength);
 
         let x[0] = 45;
         let y[0] = 0;
@@ -42,7 +42,6 @@ class Snake {
             do Screen.drawRectangle(x[i], y[i], x[i] + size, y[i] + size);
             let i = i + 1;
         }
-
         return;
     }
 
@@ -55,7 +54,6 @@ class Snake {
             do Screen.drawRectangle(x[i], y[i], x[i] + size, y[i] + size);
             let i = i + 1;
         }
-
         return;
     }
 
@@ -98,6 +96,16 @@ class Snake {
             do shiftBody();
 
             let x[0] = x[0] + size;
+            do draw();
+        }
+        return;
+    }
+
+    method void incLength() {
+        if (length < maxLength) {
+            let x[length] = x[(length - 1)];
+            let y[length] = y[(length - 1)];
+            let length = length + 1;
             do draw();
         }
         return;
