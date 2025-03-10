@@ -27,9 +27,7 @@ class SnakeGame {
                 do moveSnake();
             }
 
-            if (key = 81)  { let exit = true; }     // q key
-            // if (key = 90)  { do square.decSize(); } // z key
-            // if (key = 88)  { do square.incSize(); } // x key
+            if (key = 81)  { let exit = true; }       // q key
             if (key = 131) { do updateDirection(1); } // up arrow
             if (key = 133) { do updateDirection(2); } // down arrow
             if (key = 130) { do updateDirection(3); } // left arrow
@@ -49,7 +47,7 @@ class SnakeGame {
         if (currentDirection = 2) { do snake.moveDown(); }
         if (currentDirection = 3) { do snake.moveLeft(); }
         if (currentDirection = 4) { do snake.moveRight(); }
-        do Sys.wait(5);  // delays the next movement
+        do Sys.wait(250);  // delays the next movement
         return;
     }
 
@@ -60,7 +58,7 @@ class SnakeGame {
         if (~(newDirection = oppositeDirection)) {
             let currentDirection = newDirection;
         }
-        
+
         return;
     }
 
