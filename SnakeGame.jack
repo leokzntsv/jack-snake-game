@@ -1,0 +1,74 @@
+class SnakeGame {
+    field Snake snake;
+    field int currentDirection; // the snake's current direction: 
+                                // 0 = none, 1 = up, 2 = down, 3 = left, 4 = right
+
+    constructor SnakeGame new() {
+        let snake = Snake.new();
+        let currentDirection = 0;
+        return this;
+    }
+
+    method void dispose() {
+        // TODO: dispose objects
+        do snake.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void run() {
+        var char key;
+        var boolean exit;
+        let exit = false;
+
+        while (~exit) {
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+                do moveSnake();
+            }
+
+            if (key = 81)  { let exit = true; }     // q key
+            // if (key = 90)  { do square.decSize(); } // z key
+            // if (key = 88)  { do square.incSize(); } // x key
+            if (key = 131) { do updateDirection(1); } // up arrow
+            if (key = 133) { do updateDirection(2); } // down arrow
+            if (key = 130) { do updateDirection(3); } // left arrow
+            if (key = 132) { do updateDirection(4); } // right arrow
+
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+                do moveSnake();
+            }
+        }
+
+        return;
+    }
+
+    method void moveSnake() {
+        if (currentDirection = 1) { do snake.moveUp(); }
+        if (currentDirection = 2) { do snake.moveDown(); }
+        if (currentDirection = 3) { do snake.moveLeft(); }
+        if (currentDirection = 4) { do snake.moveRight(); }
+        do Sys.wait(5);  // delays the next movement
+        return;
+    }
+
+    method void updateDirection(int newDirection) {
+        var int oppositeDirection;
+        let oppositeDirection = getOppositeDirection(currentDirection);
+
+        if (~(newDirection = oppositeDirection)) {
+            let currentDirection = newDirection;
+        }
+        
+        return;
+    }
+
+    method int getOppositeDirection(int direction) {
+        if (direction = 1) { return 2; }
+        if (direction = 2) { return 1; }
+        if (direction = 3) { return 4; }
+        if (direction = 4) { return 3; }
+        return 0;
+    }
+}
