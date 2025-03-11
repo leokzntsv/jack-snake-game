@@ -1,8 +1,8 @@
 class Snake {
-    field Array x, y;
+    field Array x, y;       // snake's x and y coordinates
     field int length;
     field int maxLength;
-    field int size; // snake's width in pixels
+    field int size;         // snake's width in pixels
     
     field GameBoard board;
 
@@ -111,9 +111,8 @@ class Snake {
             let y[length] = y[(length - 1)];
             let length = length + 1;
             do _draw();
+            do board.snakeDidIncreaseLength(this);
         }
-        
-        do board.snakeDidIncreaseLength(this);
         return;
     }
 
