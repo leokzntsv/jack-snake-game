@@ -114,23 +114,7 @@ class GameBoard {
     }
 
     method void snakeDidInitialize(Snake snake) {
-        var int length;
-        var Array snakeX;
-        var Array snakeY;
-        var int i;
-        var Array row;
-
-        let length = snake.getLength();
-        let snakeX = snake.getXCoordinates();
-        let snakeY = snake.getYCoordinates();
-
-        let i = 0;
-        while (i < length) {
-            let row = board[snakeY[i]];
-            let row[snakeX[i]] = 1;
-            let i = i + 1;
-        }
-
+        do _addSnakeToBoard(snake);
         return;
     }
 

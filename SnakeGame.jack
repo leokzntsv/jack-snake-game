@@ -87,7 +87,7 @@ class SnakeGame {
             }
         }
 
-        do Sys.wait(250);  // delays the next movement
+        do Sys.wait(200);  // delays the next movement
         return;
     }
 
