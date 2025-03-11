@@ -1,16 +1,19 @@
 class SnakeGame {
+    field GameBoard gameBoard;
     field Snake snake;
     field int currentDirection; // the snake's current direction: 
                                 // 0 = none, 1 = up, 2 = down, 3 = left, 4 = right
 
     constructor SnakeGame new() {
-        let snake = Snake.new();
+        let gameBoard = GameBoard.new();
+        let snake = Snake.new(4, 20, gameBoard);
         let currentDirection = 0;
         return this;
     }
 
     method void dispose() {
         // TODO: dispose objects
+        do board.dispose();
         do snake.dispose();
         do Memory.deAlloc(this);
         return;
@@ -28,7 +31,7 @@ class SnakeGame {
             }
 
             if (key = 81) { let exit = true; }        // q key
-            if (key = 88) { do snake.incLength(); }   // x key
+            if (key = 88) { do snake.increaseLength(); }   // x key
 
             if (key = 131) { do updateDirection(1); } // up arrow
             if (key = 133) { do updateDirection(2); } // down arrow
@@ -45,10 +48,42 @@ class SnakeGame {
     }
 
     method void moveSnake() {
-        if (currentDirection = 1) { do snake.moveUp(); }
-        if (currentDirection = 2) { do snake.moveDown(); }
-        if (currentDirection = 3) { do snake.moveLeft(); }
-        if (currentDirection = 4) { do snake.moveRight(); }
+        if (currentDirection = 1) { 
+            if (gameBoard.canMoveUp(snake)) {
+                do snake.moveUp();
+            } else {
+                do Output.printString("Move Up. Crash!");
+                do Output.println();
+            }
+        }
+        
+        if (currentDirection = 2) {
+            if (gameBoard.canMoveDown(snake)) {
+                do snake.moveDown();
+            } else {
+                do Output.printString("Move Down. Crash!");
+                do Output.println();
+            }
+        }
+
+        if (currentDirection = 3) {
+            if (gameBoard.canMoveLeft(snake)) {
+                do snake.moveLeft();
+            } else {
+                do Output.printString("Move Left. Crash!");
+                do Output.println();
+            }
+        }
+        
+        if (currentDirection = 4) {
+            if (gameBoard.canMoveRight(snake)) {
+                do snake.moveRight();
+            } else {
+                do Output.printString("Move Right. Crash!");
+                do Output.println();
+            }
+        }
+
         do Sys.wait(250);  // delays the next movement
         return;
     }

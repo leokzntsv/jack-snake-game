@@ -1,0 +1,150 @@
+class GameBoard {
+    field int rows;
+    field int cols;
+    field Array board;  // 34x17 grid: 0 – empty cell;
+                        //             1 – snake's body;
+                        //             2 – food
+
+    constructor GameBoard new() {
+        do initializeBoard();
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void initializeBoard() {
+        var Array row;
+        var int i;
+        var int j;
+
+        let rows = 17;
+        let cols = 34;
+        let board = Array.new(rows);
+
+        let i = 0;
+        while (i < rows) {
+            let row = Array.new(cols);
+
+            let j = 0;
+            while (j < cols) {
+                let row[j] = 0;
+                let j = j + 1;
+            }
+
+            let board[i] = row;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method boolean canMoveUp(Snake snake) {
+        var Array snakeY;
+        let snakeY = snake.getYCoordinates();
+        return ((snakeY[0] / 15) > 0);
+    }
+
+    method boolean canMoveDown(Snake snake) {
+        var Array snakeY;
+        let snakeY = snake.getYCoordinates();
+        return ((snakeY[0] / 15) + 1 < rows);
+    }
+
+    method boolean canMoveLeft(Snake snake) {
+        var Array snakeX;
+        let snakeX = snake.getXCoordinates();
+        return ((snakeX[0] / 15) > 0);
+    }
+
+    method boolean canMoveRight(Snake snake) {
+        var Array snakeX;
+        let snakeX = snake.getXCoordinates();
+        return ((snakeX[0] / 15) + 1 < cols);
+    }
+
+    method void snakeDidInitialize(Snake snake) {
+        var int length;
+        var Array snakeX;
+        var Array snakeY;
+        var int i;
+        var Array row;
+
+        let length = snake.getLength();
+        let snakeX = snake.getXCoordinates();
+        let snakeY = snake.getYCoordinates();
+
+        let i = 0;
+        while (i < length) {
+            let row = board[snakeY[i] / 15];
+            let row[snakeX[i] / 15] = 1;
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void snakeWillMove(Snake snake) {
+        var int length;
+        var Array snakeX;
+        var Array snakeY;
+        var int i;
+        var Array row;
+
+        let length = snake.getLength();
+        let snakeX = snake.getXCoordinates();
+        let snakeY = snake.getYCoordinates();
+
+        let i = 0;
+        while (i < length) {
+            let row = board[snakeY[i] / 15];
+            let row[snakeX[i] / 15] = 0;
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void snakeDidMove(Snake snake) {
+        var int length;
+        var Array snakeX;
+        var Array snakeY;
+        var int i;
+        var Array row;
+
+        let length = snake.getLength();
+        let snakeX = snake.getXCoordinates();
+        let snakeY = snake.getYCoordinates();
+
+        let i = 0;
+        while (i < length) {
+            let row = board[snakeY[i] / 15];
+            let row[snakeX[i] / 15] = 1;
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void snakeDidIncreaseLength(Snake snake) {
+        var int length;
+        var Array snakeX;
+        var Array snakeY;
+        var int i;
+        var Array row;
+
+        let length = snake.getLength();
+        let snakeX = snake.getXCoordinates();
+        let snakeY = snake.getYCoordinates();
+
+        let i = 0;
+        while (i < length) {
+            let row = board[snakeY[i] / 15];
+            let row[snakeX[i] / 15] = 1;
+            let i = i + 1;
+        }
+
+        return;
+    }
+}
