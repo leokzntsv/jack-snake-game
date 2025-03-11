@@ -6,37 +6,12 @@ class GameBoard {
                         //             2 – food
 
     constructor GameBoard new() {
-        do initializeBoard();
+        do _initializeBoard();
         return this;
     }
 
     method void dispose() {
         do Memory.deAlloc(this);
-        return;
-    }
-
-    method void initializeBoard() {
-        var Array row;
-        var int i;
-        var int j;
-
-        let rows = 17;
-        let cols = 34;
-        let board = Array.new(rows);
-
-        let i = 0;
-        while (i < rows) {
-            let row = Array.new(cols);
-
-            let j = 0;
-            while (j < cols) {
-                let row[j] = 0;
-                let j = j + 1;
-            }
-
-            let board[i] = row;
-            let i = i + 1;
-        }
         return;
     }
 
@@ -86,6 +61,48 @@ class GameBoard {
     }
 
     method void snakeWillMove(Snake snake) {
+        do _removeSnakeFromBoard(snake);
+        return;
+    }
+
+    method void snakeDidMove(Snake snake) {
+        do _addSnakeToBoard(snake);
+        return;
+    }
+
+    method void snakeDidIncreaseLength(Snake snake) {
+        do _addSnakeToBoard(snake);
+        return;
+    }
+
+    // Private Methods
+
+    method void _initializeBoard() {
+        var Array row;
+        var int i;
+        var int j;
+
+        let rows = 17;
+        let cols = 34;
+        let board = Array.new(rows);
+
+        let i = 0;
+        while (i < rows) {
+            let row = Array.new(cols);
+
+            let j = 0;
+            while (j < cols) {
+                let row[j] = 0;
+                let j = j + 1;
+            }
+
+            let board[i] = row;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void _removeSnakeFromBoard(Snake snake) {
         var int length;
         var Array snakeX;
         var Array snakeY;
@@ -106,28 +123,7 @@ class GameBoard {
         return;
     }
 
-    method void snakeDidMove(Snake snake) {
-        var int length;
-        var Array snakeX;
-        var Array snakeY;
-        var int i;
-        var Array row;
-
-        let length = snake.getLength();
-        let snakeX = snake.getXCoordinates();
-        let snakeY = snake.getYCoordinates();
-
-        let i = 0;
-        while (i < length) {
-            let row = board[snakeY[i] / 15];
-            let row[snakeX[i] / 15] = 1;
-            let i = i + 1;
-        }
-
-        return;
-    }
-
-    method void snakeDidIncreaseLength(Snake snake) {
+    method void _addSnakeToBoard(Snake snake) {
         var int length;
         var Array snakeX;
         var Array snakeY;
