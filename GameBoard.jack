@@ -1,11 +1,13 @@
 class GameBoard {
+    field int cellSize;
     field int rows;
     field int cols;
     field Array board;  // 34x17 grid: 0 – empty cell;
                         //             1 – snake's body;
                         //             2 – food
 
-    constructor GameBoard new() {
+    constructor GameBoard new(int size) {
+        let cellSize = size;
         do _initializeBoard();
         return this;
     }
@@ -26,8 +28,8 @@ class GameBoard {
         let snakeX = snake.getXCoordinates();
         let snakeY = snake.getYCoordinates();
 
-        let snakeHeadX = snakeX[0] / 15;
-        let snakeHeadY = snakeY[0] / 15;
+        let snakeHeadX = snakeX[0];
+        let snakeHeadY = snakeY[0];
 
         if (~(snakeHeadY > 0)) {
             return false;
@@ -50,8 +52,8 @@ class GameBoard {
         let snakeX = snake.getXCoordinates();
         let snakeY = snake.getYCoordinates();
 
-        let snakeHeadX = snakeX[0] / 15;
-        let snakeHeadY = snakeY[0] / 15;
+        let snakeHeadX = snakeX[0];
+        let snakeHeadY = snakeY[0];
 
         if (~(snakeHeadY + 1 < rows)) {
             return false;
@@ -74,8 +76,8 @@ class GameBoard {
         let snakeX = snake.getXCoordinates();
         let snakeY = snake.getYCoordinates();
 
-        let snakeHeadX = snakeX[0] / 15;
-        let snakeHeadY = snakeY[0] / 15;
+        let snakeHeadX = snakeX[0];
+        let snakeHeadY = snakeY[0];
 
         if (~(snakeHeadX > 0)) {
             return false;
@@ -98,8 +100,8 @@ class GameBoard {
         let snakeX = snake.getXCoordinates();
         let snakeY = snake.getYCoordinates();
 
-        let snakeHeadX = snakeX[0] / 15;
-        let snakeHeadY = snakeY[0] / 15;
+        let snakeHeadX = snakeX[0];
+        let snakeHeadY = snakeY[0];
 
         if (~(snakeHeadX + 1 < cols)) {
             return false;
@@ -124,8 +126,8 @@ class GameBoard {
 
         let i = 0;
         while (i < length) {
-            let row = board[snakeY[i] / 15];
-            let row[snakeX[i] / 15] = 1;
+            let row = board[snakeY[i]];
+            let row[snakeX[i]] = 1;
             let i = i + 1;
         }
 
@@ -154,8 +156,8 @@ class GameBoard {
         var int i;
         var int j;
 
-        let rows = 17;
-        let cols = 34;
+        let rows = 255 / cellSize;
+        let cols = 511 / cellSize;
         let board = Array.new(rows);
 
         let i = 0;
@@ -188,8 +190,8 @@ class GameBoard {
 
         let i = 0;
         while (i < length) {
-            let row = board[snakeY[i] / 15];
-            let row[snakeX[i] / 15] = 0;
+            let row = board[snakeY[i]];
+            let row[snakeX[i]] = 0;
             let i = i + 1;
         }
 
@@ -209,8 +211,8 @@ class GameBoard {
 
         let i = 0;
         while (i < length) {
-            let row = board[snakeY[i] / 15];
-            let row[snakeX[i] / 15] = 1;
+            let row = board[snakeY[i]];
+            let row[snakeX[i]] = 1;
             let i = i + 1;
         }
 

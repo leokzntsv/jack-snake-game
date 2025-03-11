@@ -5,8 +5,11 @@ class SnakeGame {
                                 // 0 = none, 1 = up, 2 = down, 3 = left, 4 = right
 
     constructor SnakeGame new() {
-        let gameBoard = GameBoard.new();
-        let snake = Snake.new(4, 20, gameBoard);
+        var int boardCellSize;
+        let boardCellSize = 15;
+
+        let gameBoard = GameBoard.new(boardCellSize);
+        let snake = Snake.new(4, 20, boardCellSize, gameBoard);
         let currentDirection = 0;
         return this;
     }
@@ -30,8 +33,8 @@ class SnakeGame {
                 do moveSnake();
             }
 
-            if (key = 81) { let exit = true; }        // q key
-            if (key = 88) { do snake.increaseLength(); }   // x key
+            if (key = 81) { let exit = true; }           // q key
+            if (key = 88) { do snake.increaseLength(); } // x key
 
             if (key = 131) { do updateDirection(1); } // up arrow
             if (key = 133) { do updateDirection(2); } // down arrow
