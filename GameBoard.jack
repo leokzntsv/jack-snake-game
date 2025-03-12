@@ -115,16 +115,21 @@ class GameBoard {
 
     method void placeFood() {
         var Array row;
-        let row = board[rows / 2];
-        let row[cols / 2] = 2;
-        
-        do Screen.setColor(true);
-        do Screen.drawRectangle(
-            cols / 2 * cellSize,
-            rows / 2 * cellSize,
-            cols / 2 * cellSize + cellSize,
-            rows / 2 * cellSize + cellSize
-        );
+        var int i;
+        var int j;
+
+        let i = Random.randRange(rows - 1);
+        let j = Random.randRange(cols - 1);
+        let row = board[i];
+
+        while (row[j] = 1) {
+            let i = Random.randRange(rows - 1);
+            let j = Random.randRange(cols - 1);
+            let row = board[i];
+        }
+
+        let row[j] = 2;
+        do _renderFood(j, i);
 
         return;
     }
@@ -217,6 +222,17 @@ class GameBoard {
             let i = i + 1;
         }
 
+        return;
+    }
+
+    method void _renderFood(int x, int y) {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(
+            x * cellSize,
+            y * cellSize,
+            x * cellSize + cellSize,
+            y * cellSize + cellSize
+        );
         return;
     }
 }
