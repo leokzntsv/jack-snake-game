@@ -11,7 +11,7 @@ class SnakeGame {
         let debug = d;
 
         let gameBoard = GameBoard.new(boardCellSize);
-        let snake = Snake.new(1, 20, boardCellSize, gameBoard);
+        let snake = Snake.new(1, 5, boardCellSize, gameBoard);
         let currentDirection = 0;
         return this;
     }
@@ -81,6 +81,11 @@ class SnakeGame {
 
         if (currentDirection = 4) {
             let didMove = _moveSnakeRight();
+        }
+
+        if (_isGameFinished()) {
+            do _printCongrats();
+            let didMove = false;
         }
 
         do Sys.wait(200); // delays the next movement
@@ -173,6 +178,27 @@ class SnakeGame {
             }
         }
         return true;
+    }
+
+    method boolean _isGameFinished() {
+        var int snakeLength;
+        var int snakeMaxLength;
+        let snakeLength = snake.getLength();
+        let snakeMaxLength = snake.getMaxLength();
+        return ~(snakeLength < snakeMaxLength);
+    }
+
+    method void _printCongrats() {
+        var int snakeMaxLength;
+        let snakeMaxLength = snake.getMaxLength();
+
+        do Output.printString("You've reached the maximum length of ");
+        do Output.printInt(snakeMaxLength);
+        do Output.printString(".");
+        do Output.println();
+        do Output.printString("Congratulations!");
+        do Output.println();
+        return;
     }
 
     method void _updateDirection(int newDirection) {
