@@ -33,10 +33,6 @@ class Snake {
         return length;
     }
 
-    method int getMaxLength() {
-        return maxLength;
-    }
-
     method Array getXCoordinates() {
         return x;
     }

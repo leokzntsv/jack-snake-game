@@ -4,14 +4,27 @@ class SnakeGame {
     field Snake snake;
     field int currentDirection; // the snake's current direction: 
                                 // 0 = none, 1 = up, 2 = down, 3 = left, 4 = right
+    field int foodTarget;
+    field int foodCnt;
 
-    constructor SnakeGame new(boolean d) {
+    constructor SnakeGame new(boolean d, int target) {
         var int boardCellSize;
-        let boardCellSize = 15; // min: 4 pixels
+        var int initialSnakeLength;
+
         let debug = d;
+        let foodTarget = target;
+        let foodCnt = 0;
+
+        let boardCellSize = 15; // min: 4 pixels
+        let initialSnakeLength = 1;
 
         let gameBoard = GameBoard.new(boardCellSize);
-        let snake = Snake.new(1, 5, boardCellSize, gameBoard);
+        let snake = Snake.new(
+            initialSnakeLength,
+            initialSnakeLength + foodTarget,
+            boardCellSize,
+            gameBoard
+        );
         let currentDirection = 0;
         return this;
     }
@@ -107,6 +120,7 @@ class SnakeGame {
         } else {
             do snake.moveUp();
             if (nextCellType = 2) {
+                let foodCnt = foodCnt + 1;
                 do snake.increaseLength();
                 do gameBoard.placeFood();
             }
@@ -129,6 +143,7 @@ class SnakeGame {
         } else {
             do snake.moveDown();
             if (nextCellType = 2) {
+                let foodCnt = foodCnt + 1;
                 do snake.increaseLength();
                 do gameBoard.placeFood();
             }
@@ -151,6 +166,7 @@ class SnakeGame {
         } else {
             do snake.moveLeft();
             if (nextCellType = 2) {
+                let foodCnt = foodCnt + 1;
                 do snake.increaseLength();
                 do gameBoard.placeFood();
             }
@@ -173,6 +189,7 @@ class SnakeGame {
         } else {
             do snake.moveRight();
             if (nextCellType = 2) {
+                let foodCnt = foodCnt + 1;
                 do snake.increaseLength();
                 do gameBoard.placeFood();
             }
@@ -181,19 +198,12 @@ class SnakeGame {
     }
 
     method boolean _isGameFinished() {
-        var int snakeLength;
-        var int snakeMaxLength;
-        let snakeLength = snake.getLength();
-        let snakeMaxLength = snake.getMaxLength();
-        return ~(snakeLength < snakeMaxLength);
+        return foodCnt = foodTarget;
     }
 
     method void _printCongrats() {
-        var int snakeMaxLength;
-        let snakeMaxLength = snake.getMaxLength();
-
-        do Output.printString("You've reached the maximum length of ");
-        do Output.printInt(snakeMaxLength);
+        do Output.printString("You've reached the target score of ");
+        do Output.printInt(foodTarget);
         do Output.printString(".");
         do Output.println();
         do Output.printString("Congratulations!");

@@ -2,11 +2,13 @@ class Main {
     function void main() {
         var SnakeGame game;
         var boolean debug;
+        var int targetScore;
 
         do Random.setSeed(12345);
 
         let debug = false;
-        let game = SnakeGame.new(debug);
+        let targetScore = 5;
+        let game = SnakeGame.new(debug, targetScore);
 
         do game.run();
         do game.dispose();
