@@ -1,22 +1,25 @@
 class SnakeGame {
+    field boolean debug;
     field GameBoard gameBoard;
     field Snake snake;
     field int currentDirection; // the snake's current direction: 
                                 // 0 = none, 1 = up, 2 = down, 3 = left, 4 = right
 
-    constructor SnakeGame new() {
+    constructor SnakeGame new(boolean d) {
         var int boardCellSize;
         let boardCellSize = 15;
+        let debug = d;
 
         let gameBoard = GameBoard.new(boardCellSize);
-        let snake = Snake.new(4, 20, boardCellSize, gameBoard);
+        let snake = Snake.new(1, 20, boardCellSize, gameBoard);
         let currentDirection = 0;
         return this;
     }
 
+    // Public Methods
+
     method void dispose() {
-        // TODO: dispose objects
-        do board.dispose();
+        do gameBoard.dispose();
         do snake.dispose();
         do Memory.deAlloc(this);
         return;
@@ -30,70 +33,90 @@ class SnakeGame {
         while (~exit) {
             while (key = 0) {
                 let key = Keyboard.keyPressed();
-                do moveSnake();
+                do _moveSnake();
             }
 
-            if (key = 81) { let exit = true; }           // q key
-            if (key = 88) { do snake.increaseLength(); } // x key
+            if (key = 81) { let exit = true; } // q key
+            if ((key = 88) & debug) { do snake.increaseLength(); } // x key
 
-            if (key = 131) { do updateDirection(1); } // up arrow
-            if (key = 133) { do updateDirection(2); } // down arrow
-            if (key = 130) { do updateDirection(3); } // left arrow
-            if (key = 132) { do updateDirection(4); } // right arrow
+            if (key = 131) { do _updateDirection(1); } // up arrow
+            if (key = 133) { do _updateDirection(2); } // down arrow
+            if (key = 130) { do _updateDirection(3); } // left arrow
+            if (key = 132) { do _updateDirection(4); } // right arrow
 
             while (~(key = 0)) {
                 let key = Keyboard.keyPressed();
-                do moveSnake();
+                do _moveSnake();
             }
         }
 
         return;
     }
 
-    method void moveSnake() {
-        if (currentDirection = 1) { 
-            if (gameBoard.canMoveUp(snake)) {
-                do snake.moveUp();
-            } else {
+    // Private Methods
+
+    method void _moveSnake() {
+        var int nextCellType;
+
+        if (currentDirection = 1) {
+            let nextCellType = gameBoard.nextCellUp(snake);
+            if (nextCellType = 1) {
                 do Output.printString("Move Up. Crash!");
                 do Output.println();
+            } else {
+                do snake.moveUp();
+                if (nextCellType = 2) {
+                    do snake.increaseLength();
+                }
             }
         }
-        
+
         if (currentDirection = 2) {
-            if (gameBoard.canMoveDown(snake)) {
-                do snake.moveDown();
-            } else {
+            let nextCellType = gameBoard.nextCellDown(snake);
+            if (nextCellType = 1) {
                 do Output.printString("Move Down. Crash!");
                 do Output.println();
+            } else {
+                do snake.moveDown();
+                if (nextCellType = 2) {
+                    do snake.increaseLength();
+                }
             }
         }
 
         if (currentDirection = 3) {
-            if (gameBoard.canMoveLeft(snake)) {
-                do snake.moveLeft();
-            } else {
+            let nextCellType = gameBoard.nextCellLeft(snake);
+            if (nextCellType = 1) {
                 do Output.printString("Move Left. Crash!");
                 do Output.println();
-            }
-        }
-        
-        if (currentDirection = 4) {
-            if (gameBoard.canMoveRight(snake)) {
-                do snake.moveRight();
             } else {
-                do Output.printString("Move Right. Crash!");
-                do Output.println();
+                do snake.moveLeft();
+                if (nextCellType = 2) {
+                    do snake.increaseLength();
+                }
             }
         }
 
-        do Sys.wait(200);  // delays the next movement
+        if (currentDirection = 4) {
+            let nextCellType = gameBoard.nextCellRight(snake);
+            if (nextCellType = 1) {
+                do Output.printString("Move Right. Crash!");
+                do Output.println();
+            } else {
+                do snake.moveRight();
+                if (nextCellType = 2) {
+                    do snake.increaseLength();
+                }
+            }
+        }
+
+        do Sys.wait(200); // delays the next movement
         return;
     }
 
-    method void updateDirection(int newDirection) {
+    method void _updateDirection(int newDirection) {
         var int oppositeDirection;
-        let oppositeDirection = getOppositeDirection(currentDirection);
+        let oppositeDirection = _getOppositeDirection(currentDirection);
 
         if (~(newDirection = oppositeDirection)) {
             let currentDirection = newDirection;
@@ -102,7 +125,7 @@ class SnakeGame {
         return;
     }
 
-    method int getOppositeDirection(int direction) {
+    method int _getOppositeDirection(int direction) {
         if (direction = 1) { return 2; }
         if (direction = 2) { return 1; }
         if (direction = 3) { return 4; }

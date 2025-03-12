@@ -3,7 +3,7 @@ class GameBoard {
     field int rows;
     field int cols;
     field Array board;  // 34x17 grid: 0 – empty cell;
-                        //             1 – snake's body;
+                        //             1 – snake's body OR border;
                         //             2 – food
 
     constructor GameBoard new(int size) {
@@ -17,7 +17,7 @@ class GameBoard {
         return;
     }
 
-    method boolean canMoveUp(Snake snake) {
+    method int nextCellUp(Snake snake) {
         var Array snakeX;
         var Array snakeY;
         var Array row;
@@ -32,16 +32,16 @@ class GameBoard {
         let snakeHeadY = snakeY[0];
 
         if (~(snakeHeadY > 0)) {
-            return false;
+            return 1;
         }
 
         let row = board[snakeHeadY - 1];
         let boardValue = row[snakeHeadX];
 
-        return ~(boardValue = 1);
+        return boardValue;
     }
 
-    method boolean canMoveDown(Snake snake) {
+    method int nextCellDown(Snake snake) {
         var Array snakeX;
         var Array snakeY;
         var Array row;
@@ -56,16 +56,16 @@ class GameBoard {
         let snakeHeadY = snakeY[0];
 
         if (~(snakeHeadY + 1 < rows)) {
-            return false;
+            return 1;
         }
 
         let row = board[snakeHeadY + 1];
         let boardValue = row[snakeHeadX];
 
-        return ~(boardValue = 1);
+        return boardValue;
     }
 
-    method boolean canMoveLeft(Snake snake) {
+    method int nextCellLeft(Snake snake) {
         var Array snakeX;
         var Array snakeY;
         var Array row;
@@ -80,16 +80,16 @@ class GameBoard {
         let snakeHeadY = snakeY[0];
 
         if (~(snakeHeadX > 0)) {
-            return false;
+            return 1;
         }
 
         let row = board[snakeHeadY];
         let boardValue = row[snakeHeadX - 1];
 
-        return ~(boardValue = 1);
+        return boardValue;
     }
 
-    method boolean canMoveRight(Snake snake) {
+    method int nextCellRight(Snake snake) {
         var Array snakeX;
         var Array snakeY;
         var Array row;
@@ -104,17 +104,34 @@ class GameBoard {
         let snakeHeadY = snakeY[0];
 
         if (~(snakeHeadX + 1 < cols)) {
-            return false;
+            return 1;
         }
 
         let row = board[snakeHeadY];
         let boardValue = row[snakeHeadX + 1];
 
-        return ~(boardValue = 1);
+        return boardValue;
+    }
+
+    method void placeFood() {
+        var Array row;
+        let row = board[rows / 2];
+        let row[cols / 2] = 2;
+        
+        do Screen.setColor(true);
+        do Screen.drawRectangle(
+            cols / 2 * cellSize,
+            rows / 2 * cellSize,
+            cols / 2 * cellSize + cellSize,
+            rows / 2 * cellSize + cellSize
+        );
+
+        return;
     }
 
     method void snakeDidInitialize(Snake snake) {
         do _addSnakeToBoard(snake);
+        do placeFood();
         return;
     }
 
