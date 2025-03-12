@@ -31,9 +31,11 @@ class SnakeGame {
         let exit = false;
 
         while (~exit) {
-            while (key = 0) {
+            while ((key = 0) & (~exit)) {
                 let key = Keyboard.keyPressed();
-                do _moveSnake();
+                if (~(_moveSnake())) {
+                    let exit = true;
+                }
             }
 
             if (key = 81) { let exit = true; } // q key
@@ -44,9 +46,11 @@ class SnakeGame {
             if (key = 130) { do _updateDirection(3); } // left arrow
             if (key = 132) { do _updateDirection(4); } // right arrow
 
-            while (~(key = 0)) {
+            while ((~(key = 0)) & (~exit)) {
                 let key = Keyboard.keyPressed();
-                do _moveSnake();
+                if (~(_moveSnake())) {
+                    let exit = true;
+                }
             }
         }
 
@@ -55,67 +59,120 @@ class SnakeGame {
 
     // Private Methods
 
-    method void _moveSnake() {
+    method boolean _moveSnake() {
         var int nextCellType;
+        var boolean didMove;
+
+        if (currentDirection = 0) {
+            let didMove = true;
+        }
 
         if (currentDirection = 1) {
-            let nextCellType = gameBoard.nextCellUp(snake);
-            if (nextCellType = 1) {
-                do Output.printString("Move Up. Crash!");
-                do Output.println();
-            } else {
-                do snake.moveUp();
-                if (nextCellType = 2) {
-                    do snake.increaseLength();
-                    do gameBoard.placeFood();
-                }
-            }
+            let didMove = _moveSnakeUp();
         }
 
         if (currentDirection = 2) {
-            let nextCellType = gameBoard.nextCellDown(snake);
-            if (nextCellType = 1) {
-                do Output.printString("Move Down. Crash!");
-                do Output.println();
-            } else {
-                do snake.moveDown();
-                if (nextCellType = 2) {
-                    do snake.increaseLength();
-                    do gameBoard.placeFood();
-                }
-            }
+            let didMove = _moveSnakeDown();
         }
 
         if (currentDirection = 3) {
-            let nextCellType = gameBoard.nextCellLeft(snake);
-            if (nextCellType = 1) {
-                do Output.printString("Move Left. Crash!");
-                do Output.println();
-            } else {
-                do snake.moveLeft();
-                if (nextCellType = 2) {
-                    do snake.increaseLength();
-                    do gameBoard.placeFood();
-                }
-            }
+            let didMove = _moveSnakeLeft();
         }
 
         if (currentDirection = 4) {
-            let nextCellType = gameBoard.nextCellRight(snake);
-            if (nextCellType = 1) {
-                do Output.printString("Move Right. Crash!");
-                do Output.println();
-            } else {
-                do snake.moveRight();
-                if (nextCellType = 2) {
-                    do snake.increaseLength();
-                    do gameBoard.placeFood();
-                }
-            }
+            let didMove = _moveSnakeRight();
         }
 
         do Sys.wait(200); // delays the next movement
-        return;
+        return didMove;
+    }
+
+    method boolean _moveSnakeUp() {
+        var int nextCellType;
+        let nextCellType = gameBoard.nextCellUp(snake);
+        if (nextCellType = 1) {
+            if (debug) {
+                do Output.printString("Move Up. Crash!");
+                do Output.println();
+            } else {
+                do Output.printString("Game Over!");
+                do Output.println();
+                return false;
+            }
+        } else {
+            do snake.moveUp();
+            if (nextCellType = 2) {
+                do snake.increaseLength();
+                do gameBoard.placeFood();
+            }
+        }
+        return true;
+    }
+
+    method boolean _moveSnakeDown() {
+        var int nextCellType;
+        let nextCellType = gameBoard.nextCellDown(snake);
+        if (nextCellType = 1) {
+            if (debug) {
+                do Output.printString("Move Down. Crash!");
+                do Output.println();
+            } else {
+                do Output.printString("Game Over!");
+                do Output.println();
+                return false;
+            }
+        } else {
+            do snake.moveDown();
+            if (nextCellType = 2) {
+                do snake.increaseLength();
+                do gameBoard.placeFood();
+            }
+        }
+        return true;
+    }
+
+    method boolean _moveSnakeLeft() {
+        var int nextCellType;
+        let nextCellType = gameBoard.nextCellLeft(snake);
+        if (nextCellType = 1) {
+            if (debug) {
+                do Output.printString("Move Left. Crash!");
+                do Output.println();
+            } else {
+                do Output.printString("Game Over!");
+                do Output.println();
+                return false;
+            }
+        } else {
+            do snake.moveLeft();
+            if (nextCellType = 2) {
+                do snake.increaseLength();
+                do gameBoard.placeFood();
+            }
+        }
+        return true;
+    }
+
+    method boolean _moveSnakeRight() {
+        var int nextCellType;
+        let nextCellType = gameBoard.nextCellRight(snake);
+        if (nextCellType = 1) {
+            if (debug) {
+                do Output.printString("Move Right. Crash!");
+                do Output.println();
+            } else {
+                do Output.printString("Game Over!");
+                do Output.println();
+                return false;
+            }
+        } else {
+            do snake.moveRight();
+            if (nextCellType = 2) {
+                do snake.increaseLength();
+                do gameBoard.placeFood();
+            }
+        }
+        return true;
     }
 
     method void _updateDirection(int newDirection) {

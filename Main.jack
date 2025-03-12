@@ -5,9 +5,9 @@ class Main {
 
         do Random.setSeed(12345);
 
-        let debug = true;
+        let debug = false;
         let game = SnakeGame.new(debug);
-        
+
         do game.run();
         do game.dispose();
         return;
