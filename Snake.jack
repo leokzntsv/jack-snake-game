@@ -138,10 +138,10 @@ class Snake {
 
         while (i < length) {
             do Screen.drawRectangle(
-                x[i] * size,
-                y[i] * size,
-                x[i] * size + size,
-                y[i] * size + size
+                x[i] * size + 1,
+                y[i] * size + 1,
+                x[i] * size + size - 1,
+                y[i] * size + size - 1
             );
             let i = i + 1;
         }

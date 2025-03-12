@@ -7,7 +7,7 @@ class SnakeGame {
 
     constructor SnakeGame new(boolean d) {
         var int boardCellSize;
-        let boardCellSize = 15;
+        let boardCellSize = 15; // min: 4 pixels
         let debug = d;
 
         let gameBoard = GameBoard.new(boardCellSize);
